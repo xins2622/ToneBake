@@ -8,10 +8,10 @@ data class ExportPreset(
     val saturation: Float
 ) {
     companion object {
-        val Standard = ExportPreset("Standard SDR", "标准、保守的 HDR → SDR", 0f, 0f, 0f)
-        // Alpha calibration target: visually approach the previously selected B reference.
-        val Bright = ExportPreset("Bright SDR", "更明亮的中间调 · B 基准", 0.06f, 0.04f, 4f)
-        val Vivid = ExportPreset("Vivid SDR", "更明亮、更鲜艳", 0.08f, 0.08f, 10f)
-        val all = listOf(Standard, Bright, Vivid)
+        val Standard = ExportPreset("Standard SDR", "OpenGL HDR → SDR 基准", 0f, 0f, 0f)
+        val Bright = ExportPreset("Bright SDR", "明显抬高中间调 · 校准档 1", 0.16f, 0.03f, 4f)
+        val Brighter = ExportPreset("Brighter SDR", "更强的中间调抬升 · 校准档 2", 0.28f, 0.02f, 5f)
+        val Vivid = ExportPreset("Vivid SDR", "高亮 + 更鲜艳 · 校准档 3", 0.24f, 0.07f, 12f)
+        val all = listOf(Standard, Bright, Brighter, Vivid)
     }
 }
