@@ -27,40 +27,64 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ToneBakeScreen() {
         var input by remember { mutableStateOf<android.net.Uri?>(null) }
-        var preset by remember { mutableStateOf(ExportPreset.VividReference) }
+        var preset by remember { mutableStateOf(ExportPreset.Calibrated) }
         var status by remember { mutableStateOf("选择一个 HLG/HDR 视频开始") }
         var busy by remember { mutableStateOf(false) }
         val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             input = uri
-            if (uri != null) status = "视频已选择 · 默认推荐 Vivid Reference"
+            if (uri != null) status = "视频已选择 · 默认推荐 ToneBake Calibrated"
         }
         val exporter = remember { VideoExporter(this) }
 
         Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
             Text("ToneBake", style = MaterialTheme.typography.headlineLarge)
-            Text("把 HLG / HDR 视频烘焙成兼容性更好的 SDR。", style = MaterialTheme.typography.bodyLarge)
-            Button(onClick = { picker.launch("video/*") }, enabled = !busy) { Text(if (input == null) "选择视频" else "重新选择") }
+            Text("HLG / HDR → SDR · 数据驱动色彩映射", style = MaterialTheme.typography.bodyLarge)
+            Button(onClick = { picker.launch("video/*") }, enabled = !busy) {
+                Text(if (input == null) "选择视频" else "重新选择")
+            }
             HorizontalDivider()
-            Text("导出方案", style = MaterialTheme.typography.titleMedium)
+            Text("转换引擎", style = MaterialTheme.typography.titleMedium)
             ExportPreset.all.forEach { item ->
-                Row(Modifier.fillMaxWidth().selectable(
-                    selected = preset == item,
-                    enabled = !busy,
-                    onClick = { preset = item }
-                ).padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    Modifier.fillMaxWidth().selectable(
+                        selected = preset == item,
+                        enabled = !busy,
+                        onClick = { preset = item }
+                    ).padding(vertical = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     RadioButton(selected = preset == item, onClick = { preset = item }, enabled = !busy)
-                    Column(Modifier.padding(start = 8.dp)) { Text(item.title); Text(item.subtitle, style = MaterialTheme.typography.bodySmall) }
+                    Column(Modifier.padding(start = 8.dp)) {
+                        Text(item.title)
+                        Text(item.subtitle, style = MaterialTheme.typography.bodySmall)
+                    }
                 }
             }
             Button(onClick = {
                 val uri = input ?: return@Button
-                busy = true; status = "正在进行 HDR → SDR…"
-                exporter.export(uri, preset, {}, { file -> saveToGallery(file); busy = false; status = "完成 · 已保存到 Movies/ToneBake" }, { e -> busy = false; status = "导出失败：${e.message}" })
-            }, enabled = input != null && !busy, modifier = Modifier.fillMaxWidth()) { Text(if (busy) "转换中…" else "导出 SDR") }
+                busy = true
+                status = "正在使用 ${preset.title} 转换…"
+                exporter.export(
+                    uri,
+                    preset,
+                    {},
+                    { file ->
+                        saveToGallery(file)
+                        busy = false
+                        status = "完成 · 已保存到 Movies/ToneBake"
+                    },
+                    { e ->
+                        busy = false
+                        status = "导出失败：${e.message}"
+                    }
+                )
+            }, enabled = input != null && !busy, modifier = Modifier.fillMaxWidth()) {
+                Text(if (busy) "转换中…" else "导出 SDR")
+            }
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
             Text(status, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.weight(1f))
-            Text("v0.1 alpha · 以当前 Vivid 为中心继续对齐 B 参考视频", style = MaterialTheme.typography.labelSmall)
+            Text("v0.2 experimental · Calibrated LUT + 40 Mbps HEVC", style = MaterialTheme.typography.labelSmall)
         }
     }
 
