@@ -35,6 +35,7 @@ class VideoExporter(private val context: Context) {
     ) {
         val videoEffects = mutableListOf<Effect>()
         if (preset.calibratedLut) videoEffects += CalibratedLut.create()
+        if (preset.residualLutV2) videoEffects += ResidualLutV2.create()
         if (preset.brightness != 0f) videoEffects += Brightness(preset.brightness)
         if (preset.contrast != 0f) videoEffects += Contrast(preset.contrast)
         if (preset.saturation != 0f) {
