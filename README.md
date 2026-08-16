@@ -32,6 +32,8 @@ The current build uses:
 - Jetpack Compose BOM 2026.06.00
 - AndroidX Media3 1.10.1
 
+CI smoke-test branch is used only to verify that GitHub Actions can assemble the first debug APK.
+
 ## Roadmap
 
 1. Verify v0.1 on Xiaomi / Android 16 and calibrate Bright SDR against the reference clip.
