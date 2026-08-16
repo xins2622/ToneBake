@@ -9,9 +9,9 @@ data class ExportPreset(
 ) {
     companion object {
         val Standard = ExportPreset("Standard SDR", "OpenGL HDR → SDR 基准", 0f, 0f, 0f)
-        val Bright = ExportPreset("Bright SDR", "明显抬高中间调 · 校准档 1", 0.16f, 0.03f, 4f)
-        val Brighter = ExportPreset("Brighter SDR", "更强的中间调抬升 · 校准档 2", 0.28f, 0.02f, 5f)
-        val Vivid = ExportPreset("Vivid SDR", "高亮 + 更鲜艳 · 校准档 3", 0.24f, 0.07f, 12f)
-        val all = listOf(Standard, Bright, Brighter, Vivid)
+        val VividSoft = ExportPreset("Vivid Soft", "略柔和于当前 Vivid", 0.21f, 0.05f, 10f)
+        val VividReference = ExportPreset("Vivid Reference", "当前最接近 B 的基准", 0.24f, 0.07f, 12f)
+        val VividPlus = ExportPreset("Vivid Plus", "在基准上略增亮度、对比度和饱和度", 0.27f, 0.09f, 14f)
+        val all = listOf(Standard, VividSoft, VividReference, VividPlus)
     }
 }
