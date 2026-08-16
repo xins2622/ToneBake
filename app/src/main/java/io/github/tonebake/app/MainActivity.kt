@@ -27,12 +27,12 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ToneBakeScreen() {
         var input by remember { mutableStateOf<android.net.Uri?>(null) }
-        var preset by remember { mutableStateOf(ExportPreset.Bright) }
+        var preset by remember { mutableStateOf(ExportPreset.VividReference) }
         var status by remember { mutableStateOf("选择一个 HLG/HDR 视频开始") }
         var busy by remember { mutableStateOf(false) }
         val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             input = uri
-            if (uri != null) status = "视频已选择 · 默认推荐 Bright SDR"
+            if (uri != null) status = "视频已选择 · 默认推荐 Vivid Reference"
         }
         val exporter = remember { VideoExporter(this) }
 
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
             Text(status, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.weight(1f))
-            Text("v0.1 alpha · Bright SDR 将以已确认的 B 参考视频继续真机校准", style = MaterialTheme.typography.labelSmall)
+            Text("v0.1 alpha · 以当前 Vivid 为中心继续对齐 B 参考视频", style = MaterialTheme.typography.labelSmall)
         }
     }
 
