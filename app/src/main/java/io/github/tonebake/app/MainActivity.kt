@@ -27,12 +27,12 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ToneBakeScreen() {
         var input by remember { mutableStateOf<android.net.Uri?>(null) }
-        var preset by remember { mutableStateOf(ExportPreset.Calibrated) }
+        var preset by remember { mutableStateOf(ExportPreset.CalibratedV2) }
         var status by remember { mutableStateOf("选择一个 HLG/HDR 视频开始") }
         var busy by remember { mutableStateOf(false) }
         val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             input = uri
-            if (uri != null) status = "视频已选择 · 默认推荐 ToneBake Calibrated"
+            if (uri != null) status = "视频已选择 · 默认推荐 ToneBake Calibrated v2"
         }
         val exporter = remember { VideoExporter(this) }
 
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
             Text(status, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.weight(1f))
-            Text("v0.2 experimental · Calibrated LUT + 40 Mbps HEVC", style = MaterialTheme.typography.labelSmall)
+            Text("v0.2.1 experimental · Calibrated v2 residual LUT + 40 Mbps HEVC", style = MaterialTheme.typography.labelSmall)
         }
     }
 
